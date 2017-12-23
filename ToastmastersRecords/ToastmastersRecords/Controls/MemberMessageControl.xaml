@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="ToastmastersRecords.Controls.MemberMessageControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ToastmastersRecords.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+    <Grid Height="400" Width="600">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock>
+                <Run Text="Message from " /><Run Text="{Binding Message.Member.Name}" /><Run Text=" on " /><Run Text="{Binding Message.DateEntered, StringFormat=MM/dd/yyyy}" />
+            </TextBlock>
+            <TextBox
+                Grid.Row="1"
+                Text="{Binding Message.Text}" VerticalAlignment="Stretch"
+                TextWrapping="Wrap"
+                AcceptsReturn="True"/>
+        </Grid>
+        <GridSplitter VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="5" Grid.ColumnSpan="2" />
+        <local:DayOffRequestsUserControl
+            Grid.Row="1" Grid.Column="0"
+            DataContext="{Binding DayOffRequestsVM}"
+            />
+        <local:RoleRequestsUserControl
+            x:Name="roleRequestPanel"
+            Grid.Row="1" Grid.Column="1" 
+            DataContext="{Binding RoleRequestsVM}"
+            />
+    </Grid>
+</UserControl>
