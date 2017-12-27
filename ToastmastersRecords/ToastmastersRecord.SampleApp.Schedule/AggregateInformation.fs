@@ -89,3 +89,57 @@ let calculateHistory system userId actorGroups =
     |> Seq.iter (fun (historyId, state) -> state |> Persistence.MemberManagement.persistHistory userId historyId)
 
 
+let interpret = interpret "NA" "MM/dd/yyyy"
+let generateMessagesToMembers system userId actorGroups (filename:string)=
+    use writer = new System.IO.StreamWriter (filename)
+    Persistence.MemberManagement.getMemberHistories ()
+    |> Seq.where (fun (m,h) -> m.Awards |> System.String.IsNullOrWhiteSpace |> not &&
+                               h.ConfirmedSpeechCount = 0)
+    |> Seq.iter (fun (m, h) ->
+        sprintf """
+-------------------------
+%s
+
+Hello %s,
+
+I would like to finish this term strong with accurate data about
+our members and where they are in their journey. Please let me 
+know if you know how many speeches you've accomplished toward 
+your next award or when you held a major role. 
+
+Toastmaster ID: %d
+Awards: %s
+Speeches toward next award: %s
+Last Toastmaster: %s
+Last Table Topics Master Role: %s
+Last General Evaluator Spot Held: %s
+Last Speech Given: %s
+Last Evaluation: %s
+Last Opening Thought, Closing Thought or Joke Master: %s
+Last Functionary Role: %s
+
+Please also let me know if you plan on continuing toward the 
+old award system or if you are going to start fresh with 
+Pathways. 
+
+Thanks,
+Phillip Scott Givens, CC
+Vice President of Education
+Toastmasters - Santa Monica Club 21
+            """ 
+                m.Email
+                h.DisplayName 
+                m.ToastmasterId 
+                (if m.Awards |> System.String.IsNullOrWhiteSpace 
+                    then "None" 
+                    else m.Awards)
+                (h.CalculatedSpeechCount.ToString ())
+                (interpret h.DateAsToastmaster)
+                (interpret h.DateAsTableTopicsMaster)
+                (interpret h.DateAsGeneralEvaluator)
+                (interpret h.DateOfLastSpeech)
+                (interpret h.DateOfLastEvaluation)
+                (interpret h.DateOfLastMinorRole)
+                (interpret h.DateOfLastFunctionaryRole)
+        |> writer.Write
+        ())

@@ -61,6 +61,7 @@ Please make a selection
 8) Ingest Club Roster from Toastmasters.org
 9) Add member
 10) Ingest confirmed speech counts
+11) Generate stats for members
     """
         match Console.ReadLine () |> Int32.TryParse with
         | true, 0 -> 
@@ -121,6 +122,10 @@ Please make a selection
             match Console.ReadLine () with
             | empty when empty |> String.IsNullOrWhiteSpace -> printfn "Nothing entered"
             | fileName -> ingestSpeechCount system userId fileName actorGroups            
+            loop ()
+        | true, 11 ->
+            "C:\Users\Phillip Givens\OneDrive\Toastmasters\messages.txt"
+            |> generateMessagesToMembers system userId actorGroups 
             loop ()
         | true, i -> 
             printfn "Number not recognized: %d" i
