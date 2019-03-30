@@ -40,13 +40,13 @@ type MemberManagementEventStore () =
                 use context = new ToastmastersEFDbContext ()
                 context.MemberEvents.Add (
                     MemberEnvelopeEntity (  Id = envelope.Id,
-                                                StreamId = StreamId.unbox envelope.StreamId,
-                                                UserId = UserId.unbox envelope.UserId,
-                                                TransactionId = TransId.unbox envelope.TransactionId,
-                                                Version = Version.unbox envelope.Version,
-                                                TimeStamp = envelope.Created,
-                                                Event = JsonConvert.SerializeObject(envelope.Item)
-                                                )) |> ignore         
+                                            StreamId = StreamId.unbox envelope.StreamId,
+                                            UserId = UserId.unbox envelope.UserId,
+                                            TransactionId = TransId.unbox envelope.TransactionId,
+                                            Version = Version.unbox envelope.Version,
+                                            TimeStamp = envelope.Created,
+                                            Event = JsonConvert.SerializeObject(envelope.Item)
+                                            )) |> ignore         
                 context.SaveChanges () |> ignore
                 
             with
